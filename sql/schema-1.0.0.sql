@@ -27,9 +27,10 @@ CREATE TABLE `survey-app-db`.`options` (
     FOREIGN KEY (survey_id) REFERENCES surveys(id) ON DELETE CASCADE
 ) engine=InnoDB;
 
-CREATE TABLE `survey-app-db`.`users_options` (
+CREATE TABLE `survey-app-db`.`options_users` (
     user_id INT NOT NULL,
     option_id INT NOT NULL,
+    total_votes INT DEFAULT 0,
 
     PRIMARY KEY (user_id, option_id),
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
