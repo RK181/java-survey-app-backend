@@ -3,6 +3,7 @@ CREATE SCHEMA `survey-app-db` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_gene
 
 CREATE TABLE `survey-app-db`.`users` (
     id INT NOT NULL AUTO_INCREMENT,
+    nickname VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     salt VARCHAR(255) NOT NULL,
     PRIMARY KEY (id)
@@ -11,6 +12,9 @@ CREATE TABLE `survey-app-db`.`users` (
 CREATE TABLE `survey-app-db`.`surveys` (
     id INT NOT NULL AUTO_INCREMENT,
     user_id INT NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    total_votes INT DEFAULT 0,
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) engine=InnoDB;
@@ -18,9 +22,7 @@ CREATE TABLE `survey-app-db`.`surveys` (
 CREATE TABLE `survey-app-db`.`options` (
     id INT NOT NULL AUTO_INCREMENT,
     survey_id INT NOT NULL,
-    title VARCHAR(255) NOT NULL,
-    description TEXT,
-    total_votes INT DEFAULT 0,
+    name VARCHAR(255) NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (survey_id) REFERENCES surveys(id) ON DELETE CASCADE
 ) engine=InnoDB;
