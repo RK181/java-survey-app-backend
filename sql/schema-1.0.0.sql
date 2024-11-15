@@ -21,7 +21,7 @@ CREATE TABLE `survey-app-db`.`surveys` (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) engine=InnoDB;
 
-CREATE TABLE `survey-app-db`.`options` (
+CREATE TABLE `survey-app-db`.`survey_options` (
     id BIGINT NOT NULL AUTO_INCREMENT,
     survey_id BIGINT NOT NULL,
     name VARCHAR(255) NOT NULL,
@@ -31,11 +31,11 @@ CREATE TABLE `survey-app-db`.`options` (
     FOREIGN KEY (survey_id) REFERENCES surveys(id) ON DELETE CASCADE
 ) engine=InnoDB;
 
-CREATE TABLE `survey-app-db`.`options_users` (
+CREATE TABLE `survey-app-db`.`survey_options_users` (
     user_id BIGINT NOT NULL,
-    option_id BIGINT NOT NULL,
+    survey_option_id BIGINT NOT NULL,
 
-    PRIMARY KEY (user_id, option_id),
+    PRIMARY KEY (user_id, survey_option_id),
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (option_id) REFERENCES options(id) ON DELETE CASCADE
+    FOREIGN KEY (survey_option_id) REFERENCES survey_options(id) ON DELETE CASCADE
 ) engine=InnoDB;
