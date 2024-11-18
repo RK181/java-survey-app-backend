@@ -1,12 +1,10 @@
 package rk181.java_survey_app_backend.auth;
 
 import java.security.SecureRandom;
-import java.util.Optional;
 
 import org.bouncycastle.crypto.digests.SHA3Digest;
 import org.bouncycastle.util.encoders.Base64;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
