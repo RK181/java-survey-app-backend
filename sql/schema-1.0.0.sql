@@ -5,7 +5,7 @@ CREATE TABLE `survey-app-db`.`users` (
     id BIGINT NOT NULL AUTO_INCREMENT,
     nickname VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    salt VARCHAR(255) NOT NULL,
+    token VARCHAR(255) NULL,
     
     PRIMARY KEY (id)
 ) engine=InnoDB;
