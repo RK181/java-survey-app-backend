@@ -13,7 +13,7 @@ public abstract class Auth {
      * Set authentication context
      * @param user
      */
-    public static void setAuthContext(User user) {
+    protected static void setAuthContext(User user) {
         Authentication authenticationToken = new UsernamePasswordAuthenticationToken(user.getId(), null, null);
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
     }
