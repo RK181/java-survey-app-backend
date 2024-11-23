@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
-@RequestMapping("/surveys/{survey_id}/options")
+@RequestMapping("/surveys/{surveyId}/options")
 public class SurveyOptionController {
 
     private final SurveyOptionService surveyOptionService;
@@ -22,13 +22,13 @@ public class SurveyOptionController {
     }
 
     @PostMapping()
-    public SurveyOptionDTO creaSurveyOption(@PathVariable Long survey_id, @RequestBody SurveyOptionDTO surveyOptionDTO) {
-        return surveyOptionService.createSurveyOption(survey_id, surveyOptionDTO);
+    public SurveyOptionDTO creaSurveyOption(@PathVariable Long surveyId, @RequestBody SurveyOptionDTO surveyOptionDTO) {
+        return surveyOptionService.createSurveyOption(surveyId, surveyOptionDTO);
     }
 
-    @PatchMapping("/{id}")
-    public SurveyOptionDTO postMethodName(@PathVariable Long survey_id, @PathVariable Long id) {
-        return surveyOptionService.vote(survey_id, id);
+    @PatchMapping("/{surveyOptionId}")
+    public SurveyOptionDTO postMethodName(@PathVariable Long surveyId, @PathVariable Long surveyOptionId) {
+        return surveyOptionService.vote(surveyId, surveyOptionId);
     }
     
 
