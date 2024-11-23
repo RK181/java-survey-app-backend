@@ -36,8 +36,8 @@ public class SurveyService {
         return new SurveyDTO(survey, survey.getUser());
     }
 
-    public SurveyDTO getSurveyById(Long survey_id) {
-        Survey survey = surveyRepository.findById(survey_id).orElse(null);
+    public SurveyDTO getSurveyById(Long surveyId) {
+        Survey survey = surveyRepository.findById(surveyId).orElse(null);
         if (survey == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Survey not found");
         }
@@ -52,9 +52,9 @@ public class SurveyService {
     }
 
     @Transactional
-    public SurveyDTO putSurveyById(Long survey_id, SurveyDTO surveyDTO) {
+    public SurveyDTO putSurveyById(Long surveyId, SurveyDTO surveyDTO) {
         Long authUserID = Auth.getUserIDFromContext();
-        Survey survey = surveyRepository.findById(survey_id).orElse(null);
+        Survey survey = surveyRepository.findById(surveyId).orElse(null);
         if (survey == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Survey not found");
         }
@@ -69,19 +69,19 @@ public class SurveyService {
         return new SurveyDTO(survey, survey.getUser());
     }
 
-    public void deleteSurveyById(Long survey_id) {
+    public void deleteSurveyById(Long surveyId) {
         Long authUserID = Auth.getUserIDFromContext();
-        Survey survey = surveyRepository.findById(survey_id).orElse(null);
+        Survey survey = surveyRepository.findById(surveyId).orElse(null);
         if (survey == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Survey not found");
         }
         if (!survey.getUser().getId().equals(authUserID)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User is not the owner");
         }
-        surveyRepository.deleteById(survey_id);
+        surveyRepository.deleteById(surveyId);
     }
 
-    public void deleteSurvey(Long survey_id) {
-        surveyRepository.deleteById(survey_id);
+    public void deleteSurvey(Long surveyId) {
+        surveyRepository.deleteById(surveyId);
     }
 }
