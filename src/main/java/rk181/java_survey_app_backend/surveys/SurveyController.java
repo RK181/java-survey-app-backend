@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import rk181.java_survey_app_backend.surveys.dto.SurveyDTO;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,7 +30,7 @@ public class SurveyController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public SurveyDTO createSurvey(@RequestBody SurveyDTO surveyDTO) {
+    public SurveyDTO createSurvey(@Valid @RequestBody SurveyDTO surveyDTO) {
         return surveyService.createSurvey(surveyDTO);
     }
 
@@ -46,7 +47,7 @@ public class SurveyController {
 
     @PutMapping("/{surveyId}")
     @ResponseStatus(HttpStatus.OK)
-    public SurveyDTO putSurveyByID(@PathVariable Long surveyId, @RequestBody SurveyDTO surveyDTO) {
+    public SurveyDTO putSurveyByID(@PathVariable Long surveyId, @Valid @RequestBody SurveyDTO surveyDTO) {
         return surveyService.putSurveyById(surveyId, surveyDTO);
     }
 

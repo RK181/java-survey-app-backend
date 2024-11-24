@@ -6,6 +6,8 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import rk181.java_survey_app_backend.survey_options.SurveyOption;
 import rk181.java_survey_app_backend.survey_options.dto.SurveyOptionDTO;
@@ -18,7 +20,11 @@ import rk181.java_survey_app_backend.users.dto.UserDTO;
 public class SurveyDTO {
 
     private Long id;
+    @NotBlank(message = "Title is required")
+    @Size(min = 5, max = 100, message = "Title must be between 5 and 100 characters")
     private String title;
+    @NotBlank(message = "Description is required")
+    @Size(min = 5, max = 400, message = "Description must be between 5 and 400 characters")
     private String description;
     /**
      * Total votes of the survey, calculated field
