@@ -1,6 +1,10 @@
-package rk181.java_survey_app_backend.auth;
+package rk181.java_survey_app_backend.config.security;
 
 import java.io.IOException;
+
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -8,6 +12,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import rk181.java_survey_app_backend.auth.AuthService;
 import rk181.java_survey_app_backend.users.User;
 
 @Component
@@ -30,6 +35,15 @@ public class BearerTokenAuthFilter extends OncePerRequestFilter {
         return authService.checkToken(accessToken);
     }
 
+    /**
+     * Set authentication context
+     * @param user
+     */
+    private void setAuthContext(User user) {
+        Authentication authenticationToken = new UsernamePasswordAuthenticationToken(user.getId(), null, null);
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+    }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authHeader = request.getHeader(HEADER);
@@ -43,7 +57,7 @@ public class BearerTokenAuthFilter extends OncePerRequestFilter {
                 return;
             }
             else {
-                Auth.setAuthContext(user);
+                setAuthContext(user);
                 //Authentication authenticationToken = new UsernamePasswordAuthenticationToken(user, null, null);
                 //SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }

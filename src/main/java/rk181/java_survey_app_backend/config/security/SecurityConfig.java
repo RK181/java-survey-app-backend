@@ -1,4 +1,4 @@
-package rk181.java_survey_app_backend.auth;
+package rk181.java_survey_app_backend.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
