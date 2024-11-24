@@ -6,6 +6,8 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import rk181.java_survey_app_backend.surveys.Survey;
 import rk181.java_survey_app_backend.surveys.dto.SurveyDTO;
@@ -14,7 +16,12 @@ import rk181.java_survey_app_backend.surveys.dto.SurveyDTO;
 @Data
 public class UserDTO {
 
+    @NotBlank
+    @Size(min = 4, max = 20, message = "Nickname must be between 4 and 20 characters")
     private String nickname;
+    /**
+     * The surveys created by this user, ignored in JSON if null
+     */
     private List<SurveyDTO> surveys = null;
 
     public UserDTO() {}

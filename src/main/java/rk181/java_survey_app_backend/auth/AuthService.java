@@ -75,6 +75,12 @@ public class AuthService {
         return Base64.toBase64String(tokenHash);
     }
 
+    /**
+     * Login the user and return the token
+     * @param authRequest
+     * @throws ResponseStatusException NOT_FOUND if the user is not found or the password is incorrect
+     * @return the token string
+     */
     public String login(AuthDTO authRequest) {
         User user = userRepository.findByNickname(authRequest.getNickname()).orElse(null);
         if (user == null || !checkPassword(user.getPassword(), authRequest.getPassword())) {
@@ -88,7 +94,12 @@ public class AuthService {
         return user.getToken();
     }
 
-    public User register(AuthDTO authRequest) {
+    /**
+     * Register a new user
+     * @param authRequest
+     * @throws ResponseStatusException CONFLICT if the user already exists
+     */
+    public void register(AuthDTO authRequest) {
         User userDB = userRepository.findByNickname(authRequest.getNickname()).orElse(null);
         if (userDB != null) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "User already exists");
@@ -98,9 +109,13 @@ public class AuthService {
         String encodedPassword = argon2Encoder.encode(newUser.getPassword());
         newUser.setPassword(encodedPassword);
 
-        return userRepository.save(newUser);
+        userRepository.save(newUser);
     }
 
+    /**
+     * Logout the user by setting the token to null
+     * @throws ResponseStatusException NOT_FOUND if the user is not found
+     */
     public void logout() {
         Long id = Auth.getUserIDFromContext();
         User user = userRepository.findById(id).orElse(null);

@@ -11,24 +11,26 @@ import rk181.java_survey_app_backend.survey_options_users.SurveyOptionsUsersPK;
 import rk181.java_survey_app_backend.survey_options_users.SurveyOptionsUsersRepository;
 import rk181.java_survey_app_backend.surveys.Survey;
 import rk181.java_survey_app_backend.surveys.SurveyRepository;
-import rk181.java_survey_app_backend.users.User;
-import rk181.java_survey_app_backend.users.UserRepository;
 
 @Service
 public class SurveyOptionService {
 
     private final SurveyOptionRepository surveyOptionRepository;
     private final SurveyRepository surveyRepository;
-    private final UserRepository userRepository;
     private final SurveyOptionsUsersRepository surveyOptionsUsersRepository;
 
-    public SurveyOptionService(SurveyOptionRepository surveyOptionRepository, SurveyRepository surveyRepository, UserRepository userRepository, SurveyOptionsUsersRepository surveyOptionsUsersRepository) {
+    public SurveyOptionService(SurveyOptionRepository surveyOptionRepository, SurveyRepository surveyRepository, SurveyOptionsUsersRepository surveyOptionsUsersRepository) {
         this.surveyOptionRepository = surveyOptionRepository;
         this.surveyRepository = surveyRepository;
-        this.userRepository = userRepository;
         this.surveyOptionsUsersRepository = surveyOptionsUsersRepository;
     }
 
+    /**
+     * Create a survey option for a survey.
+     * @param survey_id
+     * @param surveyOptionDTO
+     * @return SurveyOptionDTO with Survey
+     */
     public SurveyOptionDTO createSurveyOption(Long survey_id, SurveyOptionDTO surveyOptionDTO) {
         Long authUserID = Auth.getUserIDFromContext();
         Survey survey = surveyRepository.findById(survey_id).orElse(null);
@@ -45,26 +47,34 @@ public class SurveyOptionService {
         return new SurveyOptionDTO(surveyOption);
     }
 
-    public SurveyOptionDTO vote(Long survey_id, Long id) {
+    /**
+     * Vote for a survey option. If the user has already voted, the vote is removed.
+     * @param surveyId
+     * @param surveyOptionId
+     * @throws ResponseStatusException NOT_FOUND if survey option not found 
+     * @return SurveyOptionDTO with updated total votes, without Survey
+     */
+    public SurveyOptionDTO vote(Long surveyId, Long surveyOptionId) {
         Long authUserID = Auth.getUserIDFromContext();
-        Survey survey = surveyRepository.findById(survey_id).orElse(null);
+        System.out.println("Get survey option");
+
+        /*Survey survey = surveyRepository.findById(surveyId).orElse(null);
         if (survey == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Survey not found");
         }
         
-        SurveyOption surveyOption = surveyOptionRepository.findById(id).orElse(null);
+        SurveyOption surveyOption = surveyOptionRepository.findById(surveyOptionId).orElse(null);
+        if (surveyOption == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Survey option not found");
+        }*/
+        SurveyOption surveyOption = surveyOptionRepository.findBySurveyIdAndId(surveyId, surveyOptionId).orElse(null);
         if (surveyOption == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Survey option not found");
         }
-        
-        User user = userRepository.findById(authUserID).orElse(null);
-        if (user == null) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized user");
-        }
 
-        SurveyOptionsUsersPK composite_id = new SurveyOptionsUsersPK(user.getId(), surveyOption.getId());
-        SurveyOptionsUsers surveyOptionsUsers = new SurveyOptionsUsers(composite_id);
-        if (surveyOptionsUsersRepository.existsById(composite_id)) {
+        SurveyOptionsUsersPK compositeId = new SurveyOptionsUsersPK(authUserID, surveyOption.getId());
+        SurveyOptionsUsers surveyOptionsUsers = new SurveyOptionsUsers(compositeId);
+        if (surveyOptionsUsersRepository.existsById(compositeId)) {
             surveyOptionsUsersRepository.delete(surveyOptionsUsers);
             surveyOption.setTotal_votes(surveyOption.getTotal_votes() - 1);
         }
@@ -88,6 +98,24 @@ public class SurveyOptionService {
         surveyOptionRepository.flush();*/
 
         return new SurveyOptionDTO(surveyOption);
+    }
+
+    /**
+     * Delete a survey option by survey id and survey option id.
+     * Also checks if the user is the owner of the survey.
+     * @param surveyId
+     * @param surveyOptionId
+     * @throws ResponseStatusException NOT_FOUND if survey option not found or user is not the owner of the survey
+     */
+    public void deleteSurveyOptionById(Long surveyId, Long surveyOptionId) {
+        Long authUserID = Auth.getUserIDFromContext();
+        if (!surveyRepository.existsByUserIdAndId(authUserID, surveyId) &&
+            !surveyOptionRepository.existsBySurveyIdAndId(surveyId, surveyOptionId)) 
+        {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Survey option not found");
+        }
+        
+        surveyOptionRepository.deleteById(surveyOptionId);
     }
 
 }

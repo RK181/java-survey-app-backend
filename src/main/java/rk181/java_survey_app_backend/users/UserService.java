@@ -13,7 +13,7 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    // Can be substituted with @RequiredArgsConstructor of Lombok
+    // Can be replaced with @RequiredArgsConstructor of Lombok
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -42,10 +42,7 @@ public class UserService {
     @Transactional(readOnly = true)
     public UserDTO getAuthUser() {
         Long id = Auth.getUserIDFromContext();
-        User user = userRepository.findById(id).orElse(null);
-        if (user == null) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not authorized");
-        }
+        User user = userRepository.getReferenceById(id);
         
         return new UserDTO(user.getNickname(), null);
     }
@@ -57,16 +54,14 @@ public class UserService {
     @Transactional(readOnly = true)
     public UserDTO getAuthUserAndSurveys() {
         Long id = Auth.getUserIDFromContext();
-        User user = userRepository.findById(id).orElse(null);
-        if (user == null) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not authorized");
-        }
+        User user = userRepository.getReferenceById(id);
 
         return new UserDTO(user.getNickname(), user.getSurveys());
     }
 
     /**
      * Get the user and his surveys by nickname
+     * @throws ResponseStatusException NOT_FOUND if user not found
      * @return The user and the surveys array
      */
     @Transactional(readOnly = true)

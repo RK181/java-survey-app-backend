@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import rk181.java_survey_app_backend.auth.dto.AuthDTO;
 
 @RestController
@@ -23,16 +24,16 @@ public class AuthController {
         this.authService = authService;
     }
 
-	@PostMapping("/login")
-    @ResponseStatus(HttpStatus.OK)
-    public String login(@RequestBody AuthDTO user) {
-        return authService.login(user);
-    }
-
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public void register(@RequestBody AuthDTO user) {
+    public void register(@Valid @RequestBody AuthDTO user) {
         authService.register(user);
+    }
+
+	@PostMapping("/login")
+    @ResponseStatus(HttpStatus.OK)
+    public String login(@Valid @RequestBody AuthDTO user) {
+        return authService.login(user);
     }
 
     @GetMapping("/logout")
