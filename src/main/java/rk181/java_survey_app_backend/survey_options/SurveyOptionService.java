@@ -58,15 +58,6 @@ public class SurveyOptionService {
         Long authUserID = Auth.getUserIDFromContext();
         System.out.println("Get survey option");
 
-        /*Survey survey = surveyRepository.findById(surveyId).orElse(null);
-        if (survey == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Survey not found");
-        }
-        
-        SurveyOption surveyOption = surveyOptionRepository.findById(surveyOptionId).orElse(null);
-        if (surveyOption == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Survey option not found");
-        }*/
         SurveyOption surveyOption = surveyOptionRepository.findBySurveyIdAndId(surveyId, surveyOptionId).orElse(null);
         if (surveyOption == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Survey option not found");
@@ -82,20 +73,6 @@ public class SurveyOptionService {
             surveyOptionsUsersRepository.save(surveyOptionsUsers);
             surveyOption.setTotal_votes(surveyOption.getTotal_votes() + 1);
         }
-
-        /*List<User> votedUsers = surveyOption.getUsers();
-        if (votedUsers.contains(user)) {
-            votedUsers.remove(user);
-            user.getSurveyOption().remove(surveyOption);
-            //surveyOption.setTotal_votes(surveyOption.getTotal_votes() - 1);
-
-        }
-        else {
-            votedUsers.add(user);
-            user.getSurveyOption().add(surveyOption);
-            //surveyOption.setTotal_votes(surveyOption.getTotal_votes() + 1);
-        }
-        surveyOptionRepository.flush();*/
 
         return new SurveyOptionDTO(surveyOption);
     }
