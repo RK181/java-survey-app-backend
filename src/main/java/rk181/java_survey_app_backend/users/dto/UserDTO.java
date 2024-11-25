@@ -26,6 +26,10 @@ public class UserDTO {
 
     public UserDTO() {}
 
+    public UserDTO(String nickname) {
+        this.nickname = nickname;
+    }
+
     public UserDTO(String nickname, List<Survey> surveys) {
         this.nickname = nickname;
         if (surveys != null){

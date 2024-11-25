@@ -47,7 +47,7 @@ public class UserService {
         Long id = Auth.getUserIDFromContext();
         User user = userRepository.getReferenceById(id);
         
-        return new UserDTO(user.getNickname(), null);
+        return new UserDTO(user.getNickname());
     }
 
     /**
