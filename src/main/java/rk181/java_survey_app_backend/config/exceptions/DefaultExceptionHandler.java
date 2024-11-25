@@ -1,6 +1,5 @@
 package rk181.java_survey_app_backend.config.exceptions;
 
-import java.net.URI;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
