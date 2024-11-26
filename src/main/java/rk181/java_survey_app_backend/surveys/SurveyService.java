@@ -59,8 +59,12 @@ public class SurveyService {
      * @return List of SurveyDTO with user(owner)
      */
     @Transactional(readOnly = true)
-    public List<SurveyDTO> getAllSurveys() {
-        List<Survey> surveys = surveyRepository.findAll();
+    public List<SurveyDTO> getAllSurveys(Integer offset, Integer limit) {
+        List<Survey> surveys = surveyRepository.findAll().stream()
+            .skip(offset != null ? offset : 0)
+            .limit(limit != null && limit != 0? limit : 100)
+            .toList();
+            
         return SurveyDTO.listFromSurveys(surveys);
     }
 
