@@ -15,7 +15,6 @@ CREATE TABLE `survey-app-db`.`surveys` (
     user_id BIGINT NOT NULL,
     title VARCHAR(255) NOT NULL,
     description TEXT,
-    total_votes INT UNSIGNED DEFAULT 0,
     
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
@@ -25,7 +24,6 @@ CREATE TABLE `survey-app-db`.`survey_options` (
     id BIGINT NOT NULL AUTO_INCREMENT,
     survey_id BIGINT NOT NULL,
     name VARCHAR(255) NOT NULL,
-    total_votes INT UNSIGNED DEFAULT 0,
     
     PRIMARY KEY (id),
     FOREIGN KEY (survey_id) REFERENCES surveys(id) ON DELETE CASCADE
