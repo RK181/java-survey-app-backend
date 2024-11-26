@@ -7,6 +7,7 @@ import rk181.java_survey_app_backend.survey_options.SurveyOption;
 
 @Data
 public class SurveyOptionDTO {
+    private Long id;
     @NotBlank
     @Size(min = 1, max = 50, message = "Option name must be between 1 and 50 characters")
     private String name;
@@ -23,6 +24,7 @@ public class SurveyOptionDTO {
     }
 
     public SurveyOptionDTO(SurveyOption surveyOption) {
+        this.id = surveyOption.getId();
         this.name = surveyOption.getName();
         this.total_votes = surveyOption.getTotal_votes();
     }
